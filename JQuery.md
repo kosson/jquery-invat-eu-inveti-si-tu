@@ -358,14 +358,45 @@ $(() => {
 });
 ```
 
-În acest sens, JQuery oferă câteva metode:
+Pentru a stabili rapid câteva repere în manipularea DOM-ului, JQuery oferă câteva metode care le putem împărți după utilitate. Știm deja că metoda generală `$()` permite crearea de elemente HTML.
 
-- `.insertBefore()`
-- `.insertAfter()`
-- `.prependTo()`
-- `.after()`
-- `.before()`
-- `.wrap()`
+Pentru a insera noi elemente, în toate elementele care au fost găsite conform selectorului, vor fi folosite următoarele metode.
+
+- `append()`
+- `appendTo()`
+- `prepend()`
+- `prependTo()`
+
+Pentru a insera elemente adiacent elementului vizat, se vor folosi următoarele metode:
+
+- `after()`
+- `insertAfter()`
+- `before()`
+- `insertBefore()`
+
+Pentru a **împături** fiecare element găsit conform selectorului, vor fi folosite următoarele metode:
+
+- `wrap()`
+- `wrapAll()`
+- `wrapInner()`
+
+Pentru a înlocui fiecare element găsit cu alte elemente sau cu text, se vor folosi următoarele metode:
+
+- `html()`
+- `text()`
+- `replaceAll()`
+- `replaceWith()`
+
+Pentru a elimina elementele din cele găsite se va folosi:
+
+- empty()
+
+Pentru a elimina fiecare element găsit, dar și descendenții acestora, dar fără a le șterge, se vor folosi metodele:
+
+- `remove()`
+- `detach()`
+
+Să le luăm pe rând.
 
 ### 4.1 Inserarea și poziționarea elementelor în DOM
 
