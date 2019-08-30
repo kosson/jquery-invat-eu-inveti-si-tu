@@ -1,4 +1,6 @@
-# JQUERY
+# JQuery învăț eu, înveți și tu
+
+## Introducere
 
 Este o bibliotecă utilă selectării rapide și a dinamizării elementelor. Marca bibliotecii de cod este semnul `$`, care este un alias pentru obiectul JQuery.
 
@@ -588,7 +590,7 @@ $("input[type=range]").val(3);
 
 #### 4.5.2 Metoda `text()`
 
-Această metodă extrage textul pur dintr-un element. Toate tagurile vor fi ignorate. Pentru a extrage întregul conținut HTML, se va folosi metoda `html()`.
+Această metodă extrage textul pur dintr-un element. Toate tagurile vor fi escaped și vor fi tratate precum caracterele simple. Pentru a extrage întregul conținut HTML, se va folosi metoda `html()`.
 
 ```javascript
 $('p:first').text();
@@ -599,6 +601,45 @@ Aceeași metodă poate fi folosită pentru a introduce text într-un element sel
 ```javascript
 $('p:first').text('Am schimbat conținutul elementului');
 ```
+
+Metoda acceptă ca argument și o funcție cu rol de callback. Valoarea returnată din callback va fi folosită pentru a modifica conținutul text al elementului vizat.
+
+```javascript
+$('#ancora').text((index, text) => {
+    // modfică cumva textul
+    return text;
+});
+```
+
+Argumentul `index` este poziția elementului pe care se va face modificarea textului, dacă acel element face parte dintr-un set adus prin selector. Cel de-al doilea argument `text` este textul existent anterior, care va fi supus modificării în callback. Să presupunem că avem trei elemente într-o listă neordonată.
+
+```html
+<ul>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
+```
+
+Pentru a introduce text în fiecare dintre elementele `li`, putem aplica metoda pasându-i un callback.
+
+```javascript
+$( "ul li" ).text(function( index ) {
+  return "Numărul elementului este " + ( index + 1 );
+});
+```
+
+Exemplul va produce următoarea structură HTML.
+
+```javascript
+<ul>
+  <li>Numărul elementului este 1</li>
+  <li>Numărul elementului este 2</li>
+  <li>Numărul elementului este 3</li>
+</ul>
+```
+
+Metoda `text()` nu poate fi folosită pentru a seta valori text pe elemente `input`.
 
 #### 4.5.3 Metoda `html()`
 
