@@ -1,5 +1,9 @@
 # JQuery învăț eu, înveți și tu
 
+## Un manual pentru cei grăbiți
+
+de Nicolaie Constantinescu
+
 ## Introducere
 
 Este o bibliotecă utilă selectării rapide și a dinamizării elementelor. Marca bibliotecii de cod este semnul `$`, care este un alias pentru obiectul JQuery.
@@ -134,7 +138,7 @@ Se paote adăuga un al treilea argument metodei, care este string și definește
 
 Adăugând proprietăți în obiectul pasat ca prim argument metodei `animate()`, poți anima orice proprietate CSS dorită. Poți modifica opacitate, etc.
 
-În cazul în care dorești, JQery pune la dispoziție proprii identificatori pentru proprietățile CSS care vor fi animate.
+În cazul în care dorești, JQuery pune la dispoziție proprii identificatori pentru proprietățile CSS care vor fi animate.
 
 ```javascript
 $('.element-vizat').animate({
@@ -269,6 +273,63 @@ $('#lista').siblings(':header').css('color', 'salmon');
 
 Aceste metode permit o selecție rapidă a elementelor adiacente celui țintit.
 
+#### 3.3.7 Metoda `first()`
+
+Această metodă reduce setul de elemente găsit la primul element din set. Metoda nu acceptă argumente.
+
+```javascript
+$( "li" ).first().css( "background-color", "red" );
+```
+
+#### 3.3.8 Metoda `last()`
+
+Dintr-un set de element găsite conform criteriilor de selecție, va fi capturat ultimul.
+
+```javascript
+$( "p span" ).last().addClass( "highlight" );
+```
+
+#### 3.3.9 Metoda `closest()`
+
+Este o metodă care caută într-un obiect JQuery care reprezintă un set de elemente DOM și construiește un nou obiect din elementele care se potrivesc criteriilor. Metoda se aseamănă cu `.parents()`, dar prezintă particularități. Spre deosebire de `.parent()`, care începe cu elementul părinte, `.closest()` pornește chiar cu însuși elementul.
+
+Căutarea se oprește în momentul în care este găsit elementul/ele care corespund/e criteriilor de căutare.
+
+```javascript
+$( "li.item-a" )
+  .closest( "li" )
+  .css( "background-color", "red" );
+```
+
+La nevoie poate fi pasat și un obiect DOM, care să fie considerat context de căutare.
+
+```javascript
+var listItemII = document.getElementById( "ii" );
+$( "li.item-a" )
+  .closest( "ul", listItemII )
+  .css( "background-color", "red" );
+$( "li.item-a" )
+  .closest( "#one", listItemII )
+  .css( "background-color", "green" );
+```
+
+Metoda poate fi folosită și pentru executarea unui eveniment care a fost delegat.
+
+```javascript
+$( document ).on( "click", function( event ) {
+  $( event.target ).closest( "li" ).toggleClass( "highlight" );
+});
+```
+
+Poți pasa chiar un obiect.
+
+```javascript
+var listElements = $( "li" ).css( "color", "blue" );
+$( document ).on( "click", function( event ) {
+  $( event.target ).closest( listElements ).toggleClass( "highlight" );
+});
+```
+
 ### 3.4 Filtrare elemente
 
 JQuery pune la dispoziție instrumente capabile să facă o filtrare a elementelor.
@@ -324,7 +385,7 @@ $('li').not('#lista ul li').css('color', 'green');
 
 Precum în cazul `filter()`, și metoda `not()` acceptă o funcție callback, care se aplică fiecărui element din cele care au fost țintite.
 
-### 3.5 Iterare elemente
+### 3.5 Iterare elemente și lucru cu seturi de elemente
 
 #### 3.5.1 Metoda `each()`
 
@@ -340,17 +401,15 @@ $('span.undeva').each((contor, obiectul) => {
 });
 ```
 
-
-
 ## 4. Manipularea DOM-ului
 
-Crearea elementelor în JQuery este o simplă oprațiune de a introduce drept argument funcției un string, care este fragmentul de cod HTML ce trebuie introdus în pagină.
+Crearea elementelor în JQuery este o simplă operațiune de a introduce drept argument funcției un string, care este fragmentul de cod HTML ce trebuie introdus în pagină.
 
 ```javascript
 $('<p>Un fragment de cod</p>')
 ```
 
-În acest moment avem un fragment de pagină, dar trebuie menționat locul în care se va face inserarea noului fragment.
+În acest moment avem un fragment de HTML, dar trebuie menționat locul în care se va face inserarea.
 
 ```javascript
 $(() => {
@@ -358,7 +417,7 @@ $(() => {
 });
 ```
 
-Pentru a stabili rapid câteva repere în manipularea DOM-ului, JQuery oferă câteva metode care le putem împărți după utilitate. Știm deja că metoda generală `$()` permite crearea de elemente HTML.
+Pentru a stabili rapid câteva repere în manipularea DOM-ului, JQuery oferă câteva metode pe care le putem împărți după utilitate. Știm deja că metoda generală `$()` permite crearea de elemente HTML.
 
 Pentru a insera noi elemente, în toate elementele care au fost găsite conform selectorului, vor fi folosite următoarele metode.
 
@@ -387,7 +446,7 @@ Pentru a înlocui fiecare element găsit cu alte elemente sau cu text, se vor fo
 - `replaceAll()`
 - `replaceWith()`
 
-Pentru a elimina elementele din cele găsite se va folosi:
+Pentru a elimina elementeleconform criteriilor de selecție, se va folosi:
 
 - empty()
 
@@ -416,7 +475,7 @@ Metoda `appendTo()` permite specificarea punctului în care se face atașarea no
 $('<li>Un element nou adăugat</li>').appendTo($('ul ul:first'));
 ```
 
-În cazul metodei `appendTo()` vom avea fixată legătura `this` la elementul vizat, va fi subiectul pe care se va aplica metoda. Acest lucru nu permite chaining-ul.
+În cazul metodei `appendTo()` vom avea fixată legătura `this` la elementul vizat, fiind subiectul pe care se va aplica metoda. Acest lucru nu permite chaining-ul.
 
 Pentru a beneficia de chaining, se va folosi operațiunea inversă prin folosirea metodei `append()`.
 
@@ -707,6 +766,13 @@ $('#element').clone().addClass('fain').find('span.roz').html('$ellip;').end().pr
 
 ## 5. Referința către obiectul context - `this`
 
+Legătura `this` indică o referință catre un element DOM, care a declanșat un eveniment. Simpla operațiune `$(this)` va transforma un element DOM într-un obiect JQuery pe care putem aplica metode specifice.
+
+```javascript
+// un idiom util
+var element = $(this);
+```
+
 Pentru a vedea cum realizează legătura `this`, vom realiza o mică galerie de imagine dinamică.
 
 ```html
@@ -815,7 +881,13 @@ $('.aceea').removeClass('aceea').addClass('asta');
 
 ## 8. Stocarea și utilizarea datelor
 
-Aceast atribut poate fi asociat elementelor DOM. Regula este să aplici metoda `data()` pe selector, pasându-i drept prim argument numele identificatorului valorii, iar al doilea parametru, însăși valoarea: `$('#unDiv').data('oProp', 'val')`. Pentru a folosi datele, le vei accesa cu `$('#unDiv').data('oProp')`. Pentru a obține toate datele, nu trebuie pasat niciun parametru metodei `$('#unDiv').data()`.
+### 8.1 Metoda `data()` 
+
+Aceast atribut poate fi asociat elementelor DOM. Datele pe care le poate oferi un element selectat sunt accesibile ca perechi cheie - valoare.
+
+Regula este să aplici metoda `data()` pe selector, pasându-i drept prim argument numele cheii, iar al doilea parametru, însăși valoarea: `$('#unDiv').data('oProp', 'val')`. 
+
+Pentru a folosi datele, le vei accesa cu `$('#unDiv').data('oProp')`. Pentru a obține toate datele, nu trebuie pasat niciun parametru metodei `$('#unDiv').data()`.
 
 ```javascript
   // selectează elementul care găzduiește galeria
@@ -833,13 +905,26 @@ Aceast atribut poate fi asociat elementelor DOM. Regula este să aplici metoda `
   console.log(gallery.data('imaginiDisponibile')); // afișează un array cu valorile disponibile
 ```
 
+### 8.2  Ștergerea datelor cu metoda `removeData()`
+
 Pentru a elimina toate datele, se va apela la metoda `$('#unDiv').removeData()`. Dacă dorești eliminarea unei anumite proprietăți, vom pasa drept argument numele proprietății `$('#unDiv').removeData('oProp')`.
 
-### 8.1 Utilizarea proprietății `data-*`
+### 8.3 Utilizarea proprietății `data-*`
 
 Dacă unui element DOM îi asociezi un atribut `data-*`, de exemplu `<p id="primul" data-primele="Ceva date utile">Acesta este un exemplu</p>`, poți să obții valoarea din acel atribut folosind metoda `data()` căreia îi pasezi ceea ce este după `data-`: `$('#primul').data('primele')`.
 
 ## 9. Tratarea evenimentelor
+
+Mecanismul de gestionare a evenimentelor oferit de JQuery este un nivel așezat pe cel pe care browserele îl oferă. Acest nivel permite o manipulare a evenimentelor cu anumite avantaje. De exemplu, poți trimite date în obiectul eveniment sau poți executa funcțiile atașate evenimentelor, fără ca interacțiunea cu utilizatorul să fi avut loc.
+
+În momentul în care apare un eveniment, este executată funcția cu rol de callback în interiorul căreia valoarea `this` este elementul DOM, care a inițiat evenimentul. JQuery oferă o metode care să simplifice setarea evenimentelor așa cum sunt:
+
+- `.click()`
+- `.focus()`
+- `.blur()`
+- `.change()`
+
+Aceste metode simple sunt prescurtări ale metodei `.on('numeEveniment', functie)`.
 
 ### 9.1. Evenimente de mouse
 
@@ -930,7 +1015,9 @@ $(function(){
 });
 ```
 
-### 9.2 Tratarea handlerelor
+### 9.2 Atașarea funcțiilor handler cu metoda `on()`
+
+Această metodă setează *event listeners* doar pentru elementele care există deja la momentul în care această atribuire se face.
 
 În cazul în care dorești să atașezi aceeași funcție de răspuns (*handler*) mai multor evenimente, acestea pot fi trecute într-o înșiruire separată de spații ca prim parametru al funcției `on()`.
 
@@ -939,6 +1026,22 @@ $(function () {
   $('html').on('click keydown', function () {
     console.log('ai dat click sau ai apăsat vreo tastă');
   });
+});
+```
+
+Dacă se vor crea elemente similare după atribuirea listener-ului, acestea nu li se va asocia evenimentul.
+
+```javascript
+$( document ).ready(function(){
+ 
+    // Setează toate butoanele care au clasa `alert` care există deja în DOM
+    $( "button.alert" ).on( "click", function() {
+        console.log( "A fost apăsat butonul" );
+    });
+ 
+	// creezi un alt buton cu aceeași clasă pe care îl adaugi în DOM
+    // acesta nu va avea un eveniment setat
+    $( "<button class='alert'>Alertă!</button>" ).appendTo( document.body );
 });
 ```
 
@@ -952,6 +1055,21 @@ $(function () {
   $('html').on('click keydown', unMesajPentruTine);
 });
 ```
+
+În funcția setată ca event handler ai acces la mai multe proprietăți ale obiectului eveniment, care își pot dovedi utilitatea în funcție de caz:
+
+- `pageX` și `pageY`, fiind poziția mouse-ului la momentul în care a apărut evenimentul;
+- `type`, fiind tipul evenimentului - "click", de exemplu;
+- `which`, care indică butonul sau tasta care a fost apăsată ceea ce a atras declanșarea evenimentului;
+- `data`, fiind datele care au fost pasate la momentul în care s-a făcut atribuirea (*bounding-ul*) funcției care are rol de a răspunde evenimentului.
+- `target`, fiind elementul care a declanșat evenimentul;
+- `namespace`-ul care a fost specificat atunci când evenimentul a fost declanșat;
+- `timestamp`, fiind marca de timp la care a apărut evenimentul;
+- `preventDefault()`, împiedică reflow-ul paginii;
+- `stopPropagation()` împiedică bubbling-ul.
+- `this` este elementul DOM căruia i-a fost atribuită funcția handler.
+
+Legat de `this`, este util să știi că un simplu `$(this)` va transforma un element DOM într-un obiect JQuery pe care putem aplica metode specifice.
 
 #### 9.2.1. Schimbarea unei imagini la click
 
@@ -978,9 +1096,71 @@ $(function () {
   });
 ```
 
-### 9.3. Delegated events
+### 9.3 Eliminarea evenimentului cu metoda `off()`
 
-Ce se întâmplă atunci când introduci dinamic elemente în DOM este că evenimentele definite pe celelalte evenimente, nu se vor repercuta și asupra celor nou introduse.
+Pentru eliminarea unui eveniment de pe un element, se va pasa metodei `off()` numele tipului de eveniment.
+
+```javascript
+$( "p" ).off( "click" ); // șterge toate evenimentele asociate lui click
+```
+
+În cazul în care elementul are atașată o funcție handler cu nume, poți indica ca doar acel handler să fie scos, pasând numele acesteia ca parametru secund funcției.
+
+```javascript
+var una = function() { console.log( "una" ); };
+var alta = function() { console.log( "alta" ); };
+ 
+$( "p" ).on( "click", una ).on( "click", alta );
+$( "p" ).off( "click", alta ); // va rămâne atașată funcția `una`
+```
+
+### 9.4 Rularea o singură dată - metoda `one()`
+
+Există cazuri în care un anumit eveniment să necesite rularea o singură dată.
+
+```javascript
+$( "p" ).one( "click", primulClick );
+ 
+function primulClick() {
+    console.log( "Ai apăsat pentru prima dată butonul" );
+ 
+    // Dacă e nevoie să mai fie apăsat în continuare, atașează un alt handler
+    // dacă dorești rularea o singură dată, nu reatașa
+    $( this ).click( function() { console.log( "Ai mai apăsat asta o dată" ); } );
+}
+```
+
+Funcția va fi executată totuși pentru fiecare paragraf din text. Nu va fi ștearsă de pe toae evenimentele.
+
+Metoda poate accepta mai multe tipuri de evenimente.
+
+```javascript
+$( "input[id]" ).one( "focus mouseover keydown", evenimentPrim);
+ 
+function evenimentPrim( eventObject ) {
+    console.log( "A apărut un eveniment " + eventObject.type + " care are id-ul " + this.id );
+}
+```
+
+Setarea mai multor evenimente cu mai multe handlere.
+
+```javascript
+$( "div" ).on({
+    mouseenter: function() {
+        console.log( "hovered pe un div" );
+    },
+    mouseleave: function() {
+        console.log( "mouse părăsește div-ul" );
+    },
+    click: function() {
+        console.log( "a apărut clic pe div" );
+    }
+});
+```
+
+### 9.5. Delegated events
+
+*Event delegation* se referă la faptul că este folosit *event propagation* (*bubbling*) pentru a gestiona evenimente din structura DOM-ului mai sus de poziția celui care a declanșat evenimentul. Este permisă atașarea unui singur event listener pentru elemente care există în momentul prezent sau în viitor.
 
 ```javascript
 $('#continut').on('click', 'p', function () {
@@ -992,9 +1172,42 @@ Pentru a rezolva aceasta problemă, vom pasa ca al doilea parametru, elementele 
 
 În acest caz, referința `this` se va face la elementul pasat ca al doilea parametru, nu la selector.
 
-### 9.4. Trimitere unor date suplimentare unui eveniment
+Poți specifica și mai detaliat atributele elementului care va fi atins de eveniment, dacă acest lucru este necesar.
 
-Atunci când este necesară trimiterea de date suplimentarea în cazul unui eveniment, acestea vor fi introduse într-un obiect ca prim parametru al metodei `click()`.
+```javascript
+// Ataașarea unui delegated event la un element cu un anume atribut
+$( "#lista" ).on( "click", "a", function( event ) {
+    var elementulArumentDoi = $( this );
+    if ( elementulArumentDoi.is( "[href^='http']" ) ) {
+        elementulArumentDoi.attr( "target", "_blank" );
+    }
+});
+```
+
+Pentru simplitate, specificitatea selectorului poate fi menționată direct în al doilea parametru.
+
+```javascript
+$( "#lista" ).on( "click", "a[href^='http']", function( event ) {
+    $( this ).attr( "target", "_blank" );
+});
+```
+
+### 9.6. Trimitere unor date suplimentare unui eveniment
+
+În funcție de caz, este posibilă trimiterea unor date suplimentare obiectului eveniment către funcția de prelucrare asociată (*handler*).
+
+```javascript
+// Setarea evenimentului folosind metoda `.on()`, adăugând date
+$( "input" ).on(
+    "change",
+    { ceva: "informatii" }, // Asociază date la momentul de event binding
+    function( evt ) {
+        console.log("S-a modificat valoarea unui input ", evt.data.ceva);
+    }
+);
+```
+
+Atunci când este necesară trimiterea de date suplimentarea în cazul unui eveniment, acestea vor fi introduse într-un obiect ca prim parametru al metodei `click()`, de exemplu.
 
 ```javascript
 $('#butonul').click({
@@ -1002,6 +1215,7 @@ $('#butonul').click({
 }, function (event) {
   oFunctieDePrelucrare(event.data);
 });
+// funcția handler
 function oFunctieDePrelucrare (datele) {
   let prima = datele.prima; // "ceva"
 }
@@ -1009,7 +1223,7 @@ function oFunctieDePrelucrare (datele) {
 
 Datele pasate evenimentului vor fi disponibile funcțiilor de prelucrare ca proprietate distinctă a obiectului `event`. Datele sunt disponibile din `event.data`.
 
-#### 9.4.1. Crearea unei galerii cu preview lightbox
+#### 9.6.1. Crearea unei galerii cu preview lightbox
 
 ```javascript
 $(function () {
@@ -1049,7 +1263,7 @@ $(function () {
 });
 ```
 
-### 9.5. Evenimente de tastatură
+### 9.7. Evenimente de tastatură
 
 Evenimentele `keyup` și `keydown`. Evenimentul `keydown` returnează tasta care a fost apăsată.
 
@@ -1061,9 +1275,9 @@ $('html').keydown(function (event) {
 
 Obiectul `which` este unul pe care JQuery îl adaugă. Avantajul este că JQuery înlătură toate inconsistențele dintre browsere.
 
-### 9.6. Formulare
+### 9.8. Formulare
 
-#### 9.6.1 Evenimentul `focus`
+#### 9.8.1 Evenimentul `focus`
 
 ```javascript
 var campuriForm = $('input:text, input:password, textarea');
@@ -1077,7 +1291,7 @@ campuriForm.blur(function () {
 });
 ```
 
-#### 9.6.2. Evenimentul `blur`
+#### 9.8.2. Evenimentul `blur`
 
 ```javascript
 var campuriForm = $('input:text, input:password, textarea');
@@ -1100,7 +1314,7 @@ $('#email').blur(function () {
 });
 ```
 
-#### 9.6.3. Evenimentul `change`
+#### 9.8.3. Evenimentul `change`
 
 Este evenimentul folosit în cazul checkbox-urilor, butonanelor radio și a select-urilor. Poți atașa evenimente care să trateze cazul în care utilizatorul a uitat să bifeze un checkbox sau un radio.
 
@@ -1120,7 +1334,7 @@ $(function () {
 });
 ```
 
-#### 9.6.4. Evenimentul `submit()`
+#### 9.8.4. Evenimentul `submit()`
 
 ```javascript
 $('#form').submit(function () {
@@ -1129,6 +1343,133 @@ $('#form').submit(function () {
   var checked = $('#checkbox').is(':checked');
 });
 ```
+
+### 9.9 Executarea funcție handler cu metoda `trigger()`
+
+JQuery permite executarea funcției cu rol de `event handler` fără să necesite intervenția utilizatorului. Acest lucru este posibil pentru că JQuery ține o referință către funcția handler la momentul când aceasta a fost legată de un anume eveniment.
+
+Această metodă își dovedește utilitatea maximă în cazul definirii de evenimente custom.
+
+Opțional, metodei `trigger()` i se poate pasa un al doilea parametru, care să fie un array de valori. Acest array de valori, vor fi pasate funcției handler ca argumente, imediat după ce a fost pasat obiectul event.
+
+### 9.10 Evenimente custom
+
+Ceea ce permit aceste evenimente particularizate, este o refocalizare de la evenimentul care a declanșate execuția unui listener, pe elementele care sunt afectate de eveniment.
+
+```html
+<div class="camera" id="sufragerie">
+    <div class="bec aprins"></div>
+    <div class="ruptor"></div>
+    <div class="ruptor"></div>
+    <div class="intrerupator"></div>
+</div>
+```
+
+Ceea ce dorim este ca acționând asupra elementelor care au clasa `ruptor` și `intrerupator` să modifici clasa `aprins` în `stins`. O soluție fără evenimente personalizate ar fi.
+
+```javascript
+$(".ruptor, .intrerupator").click(function () {
+    var bec = $(this).closest('.camera').find('.bec');
+    if (bec.is('.aprins')) {
+        bec.removeClass('.aprins').addClass('.stins');
+    } else {
+        bec.removeClass('stins').addClass('aprins');
+    }
+});
+```
+
+Folosind evenimente personalizate, se poate construi următoarea logică.
+
+```javascript
+// pune un eveniment custom chiar pe elementul care își va schimba starea
+$('.bec').on('bec:toggle', function (evt) {
+    var bec = $(this);
+    if ( bec.is('.aprins') ){
+        bec.removeClass('.aprins').addClass('.stins');
+    } else {
+        bec.removeClass('.stins').addClass('.aprins');
+    }
+});
+
+$('.ruptor, .intrerupator').click(function () {
+    var camera = $(this).closest('.camera');
+    camera.find('.bec').trigger('bec:toggle');
+});
+```
+
+Ceea ce am reușit este să mutăm acțiunea de pe elementele cu clasele care aveau potențialul de a modifica starea, chiar pe elementul care trebuie modificat. Numele evenomentului particular, conform documentației, poate fi orice string, dar trebuie avut în vedere să nu fie identic cu unul deja existent pentru care browserul are un anumit comportament. Pentru simplitate și siguranță, s-a ales formula `bec:` pentru denumire.
+
+Să extindem comportamentul.
+
+```html
+<div class="camera" id="sufragerie">
+    <div class="bec aprins"></div>
+    <div class="ruptor"></div>
+    <div class="ruptor"></div>
+    <div class="intrerupator"></div>
+</div>
+<div class="camera" id="dormitor">
+    <div class="bec aprins"></div>
+    <div class="ruptor"></div>
+    <div class="ruptor"></div>
+    <div class="intrerupator"></div>
+</div>
+<div id="heblu"></div>
+```
+
+În cazul acesta extins, divul care are clasa `heblu` ar trebui să pună toate becurile pe clasa `stins`.
+
+```javascript
+$('.bec')
+    .on('bec:toggle', function () {
+        var bec = $(this);
+        if ( bec.is('.aprins') ){
+            bec.trigger('bec:stins'); // adaugă un nou custom event
+        } else {
+            bec.trigger('bec:aprins');// adaugă un nou custom event
+        }
+    })
+    .on('bec:aprins', function (event) {
+    	$(this).removeClass('stins').addClass('aprins');
+	})
+	.on('bec:stins', function (event) {
+    	$(this).removeClass('aprins').addClass('stins');
+	});
+
+// acționarea individuală în funcție de acționarea div-urilor selectivă
+$('.ruptor, .intreruptor').click(function () {
+    var camera = $(this);
+    camera.find('.bec').trigger('bec:toggle')
+});
+
+// acționarea div-ului heblu
+$('#heblu').click(function () {
+    var becuri = $('.bec');
+    
+    // verifică dacă vreun bec este aprins
+    if (becuri.id('.aprins')) {
+        becuri.trigger('bec:stins');
+    } else {
+        becuri.trigger('bec:aprins');
+    }
+});
+```
+
+Un exemplu de utilizare a metodei `trigger()`, dar care primește un array pe poziția celui de-al doilea parametru.
+
+```javascript
+$( document ).on( "evenimentParticularizat", {
+    ceva: "date"
+}, function( event, arg1, arg2 ) {
+    console.log( event.data.ceva ); // "date"
+    console.log( arg1 );            // "unu"
+    console.log( arg2 );            // "doi"
+});
+ 
+$( document ).trigger( "myCustomEvent", [ "unu", "doi" ] );
+```
+
+Ca încheiere, evenimentele custom permit un transfer al atenției de pe elementul care produce schimbarea, pe elementul care suferă schimbarea. Astfel, vei putea acționa acele elemente individual sau pe toate odată. Din momentul în care comportamentul a fost descris pentru un anumit element prin intermediul unui custom event, este ușor să triggeruiești acele comportamente descrise de oriunde din cod.
 
 ## 10. Încărcarea resurselor de web
 
