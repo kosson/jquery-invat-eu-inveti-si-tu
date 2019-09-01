@@ -1160,7 +1160,24 @@ $( "div" ).on({
 
 ### 9.5. Delegated events
 
-*Event delegation* se referă la faptul că este folosit *event propagation* (*bubbling*) pentru a gestiona evenimente din structura DOM-ului mai sus de poziția celui care a declanșat evenimentul. Este permisă atașarea unui singur event listener pentru elemente care există în momentul prezent sau în viitor.
+În momentul în care ai nevoie să atașezi un eveniment unui element care a fost adăugat în DOM după ce pagina a fost încărcată, vei avea nevoie să delegi evenimentul către un părinte al potențialului element viitor adăugat.
+
+*Event delegation* se referă la faptul că este folosit *event propagation* (*bubbling*) pentru a gestiona evenimente din structura DOM-ului mai sus de poziția celui care a declanșat evenimentul. Ceea ce se petrece este o *delegare* a evenimentului către elementele părinte. Cu alte cuvinte, ori de câte ori un copil va apărea, va fi datoria părintelui să răspundă la evenimentul pe care copilul ar trebui să răspundă. Acest lucru permite atașarea de elemente în viitor care vor putea răspunde la eveniment.
+
+```javascript
+$(document).ready(function () {
+   $('#btnAdd').on('click', function(){
+    $('<div>Un div dinamic adăugat</div><br/>').appendTo('body');
+  });
+  $(document).on("click","div", function(){
+    console.log("Am fost apăsat.");
+  });
+});
+```
+
+Un lucru foarte important de precizat este că pe măsură ce elementul părinte este mai departe de locul viitorului element, performanțele vor scădea, ceea ce face pe unii programatori să conteste folosirea evenimentelor delegat. Ca regulă de aur, atașează un eveniment delegat cât mai aproape de viitorul element.
+
+Este permisă atașarea unui singur event listener pentru elemente care există în momentul prezent sau în viitor.
 
 ```javascript
 $('#continut').on('click', 'p', function () {
@@ -1168,7 +1185,7 @@ $('#continut').on('click', 'p', function () {
 });
 ```
 
-Pentru a rezolva aceasta problemă, vom pasa ca al doilea parametru, elementele sau elementul dinamic, pentru care evenimentele se vor aplica. În exemplul de mai sus, pentru toate elementele `p`, se va aplica evenimentul pasat drept al treilea parametru.
+Pentru a rezolva, vom pasa ca al doilea parametru, elementele sau elementul dinamic, pentru care evenimentele se vor aplica. În exemplul de mai sus, pentru toate elementele `p`, se va aplica evenimentul pasat drept al treilea parametru.
 
 În acest caz, referința `this` se va face la elementul pasat ca al doilea parametru, nu la selector.
 
