@@ -27,9 +27,9 @@ $(() => {
 Funcția care instanțiază jQuery, poate accepta drept argumente alte funcții declarate deja.
 
 ```javascript
-function adaugaEvidentiator()  { 
-  $('div.ceva').addClass('subliniaza'); 
-} 
+function adaugaEvidentiator()  {
+  $('div.ceva').addClass('subliniaza');
+}
 $(adaugaEvidentiator);
 ```
 
@@ -152,7 +152,7 @@ $('.element-vizat').animate({
 
 #### 2.2.5 Animații înlănțuite - metoda `delay()`
 
-Animațiile pot urma o logică. Un eveniment de animație poate urma altuia. 
+Animațiile pot urma o logică. Un eveniment de animație poate urma altuia.
 
 Pentru a realiza o posibilă logică, se va folosi metoda `delay()` care acceptă valoarea de timp dată evenimentului de animație anterior, iar dacă mai era unul anterior, vei adăuga și valoarea aceluia, ș.a.m.d.
 
@@ -401,7 +401,7 @@ $('span.undeva').each((contor, obiectul) => {
 });
 ```
 
-## 4. Manipularea DOM-ului
+## 4. Crearea elementelor și manipularea DOM-ului
 
 Crearea elementelor în JQuery este o simplă operațiune de a introduce drept argument funcției un string, care este fragmentul de cod HTML ce trebuie introdus în pagină.
 
@@ -507,7 +507,7 @@ Adaugă un element sibling după cel selectat. Primește și o funcție drept ar
 
 #### 4.1.6 Metodele `before()` și `insertBefore()`
 
-Metoda `before()` adaugă un element sibling înaintea celui selectat. 
+Metoda `before()` adaugă un element sibling înaintea celui selectat.
 
 Metoda poate primi drept argument o funcție în loc de un selector.
 
@@ -881,11 +881,11 @@ $('.aceea').removeClass('aceea').addClass('asta');
 
 ## 8. Stocarea și utilizarea datelor
 
-### 8.1 Metoda `data()` 
+### 8.1 Metoda `data()`
 
 Aceast atribut poate fi asociat elementelor DOM. Datele pe care le poate oferi un element selectat sunt accesibile ca perechi cheie - valoare.
 
-Regula este să aplici metoda `data()` pe selector, pasându-i drept prim argument numele cheii, iar al doilea parametru, însăși valoarea: `$('#unDiv').data('oProp', 'val')`. 
+Regula este să aplici metoda `data()` pe selector, pasându-i drept prim argument numele cheii, iar al doilea parametru, însăși valoarea: `$('#unDiv').data('oProp', 'val')`.
 
 Pentru a folosi datele, le vei accesa cu `$('#unDiv').data('oProp')`. Pentru a obține toate datele, nu trebuie pasat niciun parametru metodei `$('#unDiv').data()`.
 
@@ -954,7 +954,7 @@ $(function(){
 });
 ```
 
-Dacă dorești să se declanșeze evenimentul click ca și cum elementul ar fi fost acționat, se va apela direct click: 
+Dacă dorești să se declanșeze evenimentul click ca și cum elementul ar fi fost acționat, se va apela direct click:
 
 ```javascript
 // <button id="btn-prim">Apasă-mă!</button>
@@ -979,7 +979,7 @@ $(function(){
 });
 ```
 
-În cazul lui *hover*, vom avea de-a face cu două evenimente. Unul care se declanșează la momentul în care mouse-ul *intră* pe element și al doilea pentru momentul în care mouse-ul *iese* de pe element. Pentru tratarea separată a celor două evenimente, avem metode specializate. 
+În cazul lui *hover*, vom avea de-a face cu două evenimente. Unul care se declanșează la momentul în care mouse-ul *intră* pe element și al doilea pentru momentul în care mouse-ul *iese* de pe element. Pentru tratarea separată a celor două evenimente, avem metode specializate.
 
 #### 9.1.4 Metodele `mouseenter()` și `mouseleave()`
 
@@ -1033,12 +1033,12 @@ Dacă se vor crea elemente similare după atribuirea listener-ului, acestea nu l
 
 ```javascript
 $( document ).ready(function(){
- 
+
     // Setează toate butoanele care au clasa `alert` care există deja în DOM
     $( "button.alert" ).on( "click", function() {
         console.log( "A fost apăsat butonul" );
     });
- 
+
 	// creezi un alt buton cu aceeași clasă pe care îl adaugi în DOM
     // acesta nu va avea un eveniment setat
     $( "<button class='alert'>Alertă!</button>" ).appendTo( document.body );
@@ -1109,7 +1109,7 @@ $( "p" ).off( "click" ); // șterge toate evenimentele asociate lui click
 ```javascript
 var una = function() { console.log( "una" ); };
 var alta = function() { console.log( "alta" ); };
- 
+
 $( "p" ).on( "click", una ).on( "click", alta );
 $( "p" ).off( "click", alta ); // va rămâne atașată funcția `una`
 ```
@@ -1120,10 +1120,10 @@ Există cazuri în care un anumit eveniment să necesite rularea o singură dat�
 
 ```javascript
 $( "p" ).one( "click", primulClick );
- 
+
 function primulClick() {
     console.log( "Ai apăsat pentru prima dată butonul" );
- 
+
     // Dacă e nevoie să mai fie apăsat în continuare, atașează un alt handler
     // dacă dorești rularea o singură dată, nu reatașa
     $( this ).click( function() { console.log( "Ai mai apăsat asta o dată" ); } );
@@ -1136,7 +1136,7 @@ Metoda poate accepta mai multe tipuri de evenimente.
 
 ```javascript
 $( "input[id]" ).one( "focus mouseover keydown", evenimentPrim);
- 
+
 function evenimentPrim( eventObject ) {
     console.log( "A apărut un eveniment " + eventObject.type + " care are id-ul " + this.id );
 }
@@ -1462,7 +1462,7 @@ $('.ruptor, .intreruptor').click(function () {
 // acționarea div-ului heblu
 $('#heblu').click(function () {
     var becuri = $('.bec');
-    
+
     // verifică dacă vreun bec este aprins
     if (becuri.id('.aprins')) {
         becuri.trigger('bec:stins');
@@ -1482,7 +1482,7 @@ $( document ).on( "evenimentParticularizat", {
     console.log( arg1 );            // "unu"
     console.log( arg2 );            // "doi"
 });
- 
+
 $( document ).trigger( "myCustomEvent", [ "unu", "doi" ] );
 ```
 
@@ -1526,4 +1526,3 @@ Biblioteca de cod este împărțită în patru componente mari:
 - efecte
 - widgets
 - utilitare.
-
